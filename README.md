@@ -1,3 +1,3 @@
 Store Management System
 
-![Video](video/store_management_x264.mp4)
+![Video](store_management/video/store_management_x264.mp4)
