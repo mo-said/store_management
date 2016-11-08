@@ -23,10 +23,11 @@ mysql_select_db('store_management');
    <h2><b>Update Order</b></h2>
   </div>
   <br/>
- <form  method="post" action="./sql/edit_order.php">
+ <form  method="post" action="./sql/update_order.php">
  <?php
   $id=$_GET['id'];
   $sql="SELECT * FROM orders WHERE id='$id' ";
+
 if($rel=mysql_query($sql,$conn)){
         if($res=mysql_fetch_array($rel)){
  ?>
@@ -40,19 +41,6 @@ if($rel=mysql_query($sql,$conn)){
   </div>
 </div>
 
-<div class="form-group row">
-  <label for="example-text-input" class="col-xs-2 col-form-label" placeholder="description your order">Details</label>
-  <div class="col-xs-10">
-  	<textarea class="form-control" name="details" rows="2" placeholder="Details For order "><?php echo $res['details']; ?></textarea>
-  </div>
-</div>
-
-<div class="form-group row">
-  <label for="example-text-input" class="col-xs-2 col-form-label">Total Price</label>
-  <div class="col-xs-10">
-    <input class="form-control" type="text" name="total_price" placeholder="Enter Your Total Price" value=<?php echo $res['total_price']; ?> required>
-  </div>
-</div>
 
 <div class="form-group row">
   <label for="example-date-input" class="col-xs-2 col-form-label">Date</label>
@@ -60,16 +48,62 @@ if($rel=mysql_query($sql,$conn)){
     <input class="form-control" name="date" type="date" id="example-date-input" value=<?php echo $res['date']; ?> required>
   </div>
 </div>
-  <div class="col-sm-offset-2 col-sm-10">
-    <button type="submit" class="btn btn-success" >edit</button>
-  </div>
-  <?php
+ <?php
     }
   }
   ?>
+<br>
+    <hr/>
+   <table id="#myTable" class='table table-bordered'>
+    <thead>
+
+      <tr>
+        <th>Item Name</th>
+        <th>Price</th>
+        <th><a id="addline" class="btn btn-success"href="#"  >Add line</a></th>
+      </tr>
+    </thead>
+    <tbody>
+     <?php
+      $sql="SELECT * FROM line_items WHERE order_id=". $res['id'] .";";
+      
+        if($rel2=mysql_query($sql,$conn)){
+        while($res2=mysql_fetch_array($rel2)){
+     ?> 
+    
+      <tr>
+        <td> <input name="item[]" type="text" value="<?php echo $res2['item_name']; ?>" > </td>
+        <td> <input name="price[]" type="text" value=<?php echo $res2['price']; ?> ></td>
+      </tr>
+ <?php
+    }
+  }
+  ?>
+    </tbody>
+   </table>
+  <div class="col-sm-offset-2 col-sm-10">
+    <button type="submit" class="btn btn-warning col-md-offset-10" >edit</button>
+  </div>
+ 
   </form>
 
   </div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+$("#addline").click(function () {
+    $('table tr:last').after('<tr><td><input name="item[]" type="text" /></td><td><input name="price[]" type="text"/> <a style="float:right;"  class="btn" onclick="deleteRow(this)" href="#">X</a> </td></tr>');
+
+});
+});
+
+function deleteRow(row)
+{
+    $(row).parents('tr').remove();
+}
+
+</script>
+
 </body>
 </html>
 <?php

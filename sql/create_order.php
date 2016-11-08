@@ -12,6 +12,7 @@ $rel_number = mysql_query($sql_check_number, $conn) or die(mysql_error());
 if (mysql_num_rows($rel_number) > 0) {
 	header("location: /store_management/index.php?error=1");
 }else {
+	
 	$order_number = $_POST["order_number"];
 	$details =$_POST["details"];
 	$total_price = $_POST["total_price"];
@@ -23,10 +24,10 @@ if (mysql_num_rows($rel_number) > 0) {
 		echo "not done";
 	}else{
 
-		header("location: /store_management/table_order.php");
+		echo "Done Insert";
 	}
 
-}//esle
+}
 
 mysql_close($conn);
 ?>

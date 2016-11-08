@@ -27,25 +27,56 @@ mysql_select_db('store_management');
 		<tr>
         <th>ID</th>
         <th>Ordar name</th>
-        <th>details</th>
-        <th>Total Price</th>
         <th>Date</th>
+        <th>Details</th>
         <th></th>
-      </tr>
+  </tr>
     </thead>
     <tbody>
      <?php
       $sql="SELECT * FROM orders";
-      
+      $res = '';
         if($rel=mysql_query($sql,$conn)){
         while($res=mysql_fetch_array($rel)){
+
      ?> 
         <tr>
         <td><?php echo $res['id'] ?></td>
         <td><?php echo $res['order_number'] ?></td>
-        <td><?php echo $res['details'] ?></td>
-        <td><?php echo $res['total_price'] ?></td>
         <td><?php echo $res['date'] ?></td>
+        <td>
+          
+
+        
+<table class='table table-bordered'>
+    <thead>
+    <tr>
+        <th>item_name</th>
+        <th>price</th>
+      </tr>
+    </thead>
+    <tbody>
+     <?php
+      $sql="SELECT * FROM line_items WHERE order_id=". $res['id'] .";";
+      
+        if($rel2=mysql_query($sql,$conn)){
+        while($res2=mysql_fetch_array($rel2)){
+     ?> 
+        <tr>
+        <td><?php echo $res2['item_name'] ?></td>
+        <td><?php echo $res2['price'] ?></td>
+     
+        </tr>
+        <?php
+      }
+    }
+  ?>  
+    </tbody>
+  </table>
+
+
+        </td>
+
         <td><a  class="btn btn-danger" href=<?php echo "/Store_management/edit_order.php?id=".$res['id']?> >Edit</a></td>
       	</tr>
         <?php
@@ -54,7 +85,6 @@ mysql_select_db('store_management');
   ?>  
     </tbody>
   </table>
-<a  class="btn btn-success" href="index.php" >Create new order</a>
 </div>
 </body>
 </html>
